@@ -1,4 +1,4 @@
-import google.generativeai as genai
+import google.geneai as genai
 import json
 import streamlit as st
 
@@ -48,3 +48,4 @@ Dinner:
 
     response = model.generate_content(prompt)
     return response.text
+
