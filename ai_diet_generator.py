@@ -3,7 +3,7 @@ import json
 import os
 
 # ---------- CONFIG ----------
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+genai.configure(api_key=os.getenv("AIzaSyCY2-GoFn-5sRYHj5fU8qACivH5eDY-cqs"))
 
 # ✅ MOST STABLE MODEL (STREAMLIT SAFE)
 model = genai.GenerativeModel("models/gemini-pro")
@@ -60,4 +60,5 @@ Dinner:
         "bert_prediction": disease,
         "diet_plan": response.text
     }
+
 
