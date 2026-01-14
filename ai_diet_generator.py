@@ -1,12 +1,18 @@
 import google.generativeai as genai
 import json
-import os
+import streamlit as st
 
-# CONFIG
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# ==============================
+# Gemini Configuration
+# ==============================
+genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-model = genai.GenerativeModel("models/gemini-pro")
+# ✅ CORRECT MODEL (NO models/)
+model = genai.GenerativeModel("gemini-1.5-flash")
 
+# ==============================
+# Diet Generator Function
+# ==============================
 def generate_diet(patient_id):
     with open("final_diet_output.json", "r") as f:
         patients = json.load(f)
@@ -18,10 +24,14 @@ def generate_diet(patient_id):
     disease = patient["bert_prediction"]
 
     prompt = f"""
+You are a clinical dietitian.
+
 Generate a 2-day diet plan.
 
 Patient ID: {patient_id}
 Medical Condition: {disease}
+
+FORMAT:
 
 Day 1:
 Breakfast:
