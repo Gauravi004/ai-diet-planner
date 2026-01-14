@@ -1,12 +1,13 @@
+import streamlit as st
 import google.generativeai as genai
 import json
-import os
 
-# ---------- CONFIG ----------
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# CONFIG - st.secrets use karein
+api_key = st.secrets["GEMINI_API_KEY"]
+genai.configure(api_key=api_key)
 
-# ✅ MOST STABLE MODEL (STREAMLIT SAFE)
-model = genai.GenerativeModel("models/gemini-pro")
+# Model update karein
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # ---------- FUNCTION ----------
 def generate_diet(patient_id):
@@ -60,6 +61,7 @@ Dinner:
         "bert_prediction": disease,
         "diet_plan": response.text
     }
+
 
 
 
