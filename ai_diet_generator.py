@@ -1,21 +1,13 @@
-import streamlit as st
 import google.generativeai as genai
 import json
+import os
 
-try:
-        # Secret key check
-        api_key = st.secrets.get("GEMINI_API_KEY")
-        if not api_key:
-            return "Error: API Key nahi mili. Streamlit Secrets check karein."
-            
-        genai.configure(api_key=api_key)
+# CONFIG
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# Model update karein
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel("models/gemini-pro")
 
-# ---------- FUNCTION ----------
 def generate_diet(patient_id):
-
     with open("final_diet_output.json", "r") as f:
         patients = json.load(f)
 
@@ -26,23 +18,9 @@ def generate_diet(patient_id):
     disease = patient["bert_prediction"]
 
     prompt = f"""
-You are a clinical dietitian.
-
-Generate a 2-day diet plan for the following patient.
+Generate a 2-day diet plan.
 
 Patient ID: {patient_id}
-Medical Condition: {disease}
-
-IMPORTANT RULES:
-- Mention ONLY ONE disease.
-- Use EXACTLY the format shown below.
-- Keep meals simple and realistic.
-- No explanations, no tables.
-
-FORMAT:
-
-Patient: {patient_id}
-
 Medical Condition: {disease}
 
 Day 1:
@@ -59,14 +37,4 @@ Dinner:
 """
 
     response = model.generate_content(prompt)
-
-    return {
-        "patient_id": patient_id,
-        "bert_prediction": disease,
-        "diet_plan": response.text
-    }
-
-
-
-
-
+    return response.text
