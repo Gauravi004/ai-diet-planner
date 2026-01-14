@@ -6,7 +6,7 @@ import os
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # ✅ MOST STABLE MODEL (STREAMLIT SAFE)
-model = genai.GenerativeModel("gemini-pro")
+model = genai.GenerativeModel("models/gemini-pro")
 
 # ---------- FUNCTION ----------
 def generate_diet(patient_id):
@@ -60,3 +60,4 @@ Dinner:
         "bert_prediction": disease,
         "diet_plan": response.text
     }
+
