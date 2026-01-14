@@ -7,7 +7,7 @@ import streamlit as st
 # ==============================
 genai.configure(api_key=st.secrets["GEMINI_API_KEY"])
 
-# ✅ CORRECT MODEL (NO models/)
+# ✅ Correct model
 model = genai.GenerativeModel("gemini-1.5-flash")
 
 # ==============================
@@ -17,7 +17,8 @@ def generate_diet(patient_id):
     with open("final_diet_output.json", "r") as f:
         patients = json.load(f)
 
-    patient = next((p for p in patients if p["patient_id"] == patient_id), None)
+    # Match patient_id safely
+    patient = next((p for p in patients if int(p["patient_id"]) == patient_id), None)
     if not patient:
         return None
 
@@ -46,7 +47,10 @@ Snack:
 Dinner:
 """
 
-    response = model.generate_content(prompt)
-    return response.text
+    response = model.generate_content(
+        input=prompt,
+        temperature=0.7
+    )
 
-
+    diet_text = response.result[0].content[0].text
+    return {"diet_plan": diet_text}
