@@ -2,9 +2,13 @@ import streamlit as st
 import google.generativeai as genai
 import json
 
-# CONFIG - st.secrets use karein
-api_key = st.secrets["GEMINI_API_KEY"]
-genai.configure(api_key=api_key)
+try:
+        # Secret key check
+        api_key = st.secrets.get("GEMINI_API_KEY")
+        if not api_key:
+            return "Error: API Key nahi mili. Streamlit Secrets check karein."
+            
+        genai.configure(api_key=api_key)
 
 # Model update karein
 model = genai.GenerativeModel("gemini-1.5-flash")
@@ -61,6 +65,7 @@ Dinner:
         "bert_prediction": disease,
         "diet_plan": response.text
     }
+
 
 
 
